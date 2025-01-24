@@ -74,12 +74,13 @@ namespace ExamenP3YulianaCapito.ViewModels
                     if (resultados != null && resultados.Any())
                     {
                         Areopuertos = resultados;
-                        Resultado = $"Se encontraron {resultados.Count} aeropuertos.";
+                        var aeropuerto = resultados.First();
+                        Resultado = $"Aeropuerto encontrado: {aeropuerto.Name} ({aeropuerto.City}).";
                     }
                     else
                     {
                         Areopuertos = new List<AreopuertoYC>();
-                        Resultado = "No se encontraron aeropuertos con ese término de búsqueda.";
+                        Resultado = "No se encontraron aeropuertos con ese término de búsqueda";
                     }
                 }
                 catch (Exception ex)
