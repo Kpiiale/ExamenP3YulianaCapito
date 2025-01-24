@@ -25,7 +25,7 @@ namespace ExamenP3YulianaCapito.Repositories
         {
             var url = $"https://freetestapi.com/api/v1/airports?search={busqueda}";
             var response = _httpClient.GetStringAsync(url).GetAwaiter().GetResult();
-            var aeropuertos = JsonSerializer.Deserialize<List<AreopuertoYC>>(response);
+            var aeropuertos = JsonConvert.DeserializeObject<List<AreopuertoYC>>(response);
             return aeropuertos ?? new List<AreopuertoYC>();
 
         }
