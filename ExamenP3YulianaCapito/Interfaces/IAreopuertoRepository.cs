@@ -9,7 +9,6 @@ namespace ExamenP3YulianaCapito.Interfaces
 {
     internal interface IAreopuertoRepository
     {
-        List<AreopuertoYC> DevuelveListaAreopuertos();
-        AreopuertoYC DevuelveInfoAreopuerto(int Id);
+        List<AreopuertoYC> BuscarAreopuertos(string busqueda);
     }
 }
