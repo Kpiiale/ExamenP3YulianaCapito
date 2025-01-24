@@ -28,5 +28,15 @@ namespace ExamenP3YulianaCapito.Repositories
             return aeropuertos ?? new List<AreopuertoYC>();
 
         }
+
+        public void GuardarAeropuertos(List<AreopuertoYC> aeropuertos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AreopuertoYC> ObtenerAeropuertosGuardados()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

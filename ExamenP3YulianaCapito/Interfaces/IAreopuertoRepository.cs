@@ -10,5 +10,7 @@ namespace ExamenP3YulianaCapito.Interfaces
     internal interface IAreopuertoRepository
     {
         List<AreopuertoYC> BuscarAreopuertos(string busqueda);
+        void GuardarAeropuertos(List<AreopuertoYC> aeropuertos);
+        List<AreopuertoYC> ObtenerAeropuertosGuardados();
     }
 }
