@@ -14,8 +14,7 @@ namespace ExamenP3YulianaCapito.Repositories
     internal class AreopuertoRepository : IAreopuertoRepository
     {
         public HttpClient _httpClient;
-        public string endpoint = "https://www.freetestapi.com/api/v1/airports?search=Singapore";
-
+        
         public AreopuertoRepository()
         {
             _httpClient = new HttpClient(); 

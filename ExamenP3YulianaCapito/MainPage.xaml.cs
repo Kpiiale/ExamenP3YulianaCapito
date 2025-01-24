@@ -6,7 +6,7 @@
 
         public MainPage()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
     }
 

@@ -14,7 +14,7 @@
                 Command="{Binding CommandBuscarAeropuertos}" />
         <Label Text="{Binding Resultado}" 
                FontAttributes="Bold" 
-               TextColor="Red" />
+               TextColor="White" />
         <ListView ItemsSource="{Binding Aeropuertos}">
             <ListView.ItemTemplate>
                 <DataTemplate>
