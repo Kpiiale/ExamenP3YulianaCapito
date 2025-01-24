@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExamenP3YulianaCapito.Models
 {
-    internal class AreopuertoYC
+    public class AreopuertoYC
     {
         public int Id { get; set; }
         public string Name { get; set; }
