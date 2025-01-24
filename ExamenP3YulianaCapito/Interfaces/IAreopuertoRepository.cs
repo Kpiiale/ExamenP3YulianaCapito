@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExamenP3YulianaCapito.Interfaces
 {
-    internal interface IAreopuertoRepository
+    public interface IAreopuertoRepository
     {
         List<AreopuertoYC> BuscarAreopuertos(string busqueda);
-        void GuardarAeropuertos(List<AreopuertoYC> aeropuertos);
-        List<AreopuertoYC> ObtenerAeropuertosGuardados();
+        void GuardarAeropuertos(List<HistorialYC> aeropuertos);
+        List<HistorialYC> ObtenerAeropuertosGuardados();
     }
 }

@@ -1,11 +1,9 @@
 ﻿using ExamenP3YulianaCapito.Interfaces;
 using ExamenP3YulianaCapito.Models;
 using SQLite;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExamenP3YulianaCapito.Repositories
 {
@@ -13,22 +11,27 @@ namespace ExamenP3YulianaCapito.Repositories
     {
         private readonly string _dbPath = Path.Combine(FileSystem.AppDataDirectory, "AreopuertosYC.db3");
         private SQLiteConnection _connection;
+
         public AeropuertoSQLiteRepository()
         {
-            Init(); 
+            Init();
         }
+
         public void Init()
         {
             _connection = new SQLiteConnection(_dbPath);
             _connection.CreateTable<AreopuertoYC>();
+            _connection.CreateTable<HistorialYC>();
         }
 
         public List<AreopuertoYC> BuscarAreopuertos(string busqueda)
         {
-            throw new NotImplementedException();
+            return _connection.Table<AreopuertoYC>()
+                .Where(a => a.Name.Contains(busqueda) || a.City.Contains(busqueda))
+                .ToList();
         }
 
-        public void GuardarAeropuertos(List<AreopuertoYC> aeropuertos)
+        public void GuardarAeropuertos(List<HistorialYC> aeropuertos)
         {
             foreach (var aeropuerto in aeropuertos)
             {
@@ -36,9 +39,9 @@ namespace ExamenP3YulianaCapito.Repositories
             }
         }
 
-        public List<AreopuertoYC> ObtenerAeropuertosGuardados()
+        public List<HistorialYC> ObtenerAeropuertosGuardados()
         {
-            return _connection.Table<AreopuertoYC>().ToList();
+            return _connection.Table<HistorialYC>().ToList();
         }
     }
 }

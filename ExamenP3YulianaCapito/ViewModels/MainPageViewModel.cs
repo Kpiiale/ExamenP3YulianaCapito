@@ -3,12 +3,9 @@ using ExamenP3YulianaCapito.Models;
 using ExamenP3YulianaCapito.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ExamenP3YulianaCapito.ViewModels
@@ -21,6 +18,8 @@ namespace ExamenP3YulianaCapito.ViewModels
         private List<AreopuertoYC> _aeropuertos;
 
         public ICommand CommandBuscarAeropuertos { get; set; }
+        public ICommand CommandGuardarHistorial { get; set; }
+
         public string TerminoBusqueda
         {
             get => _terminoBusqueda;
@@ -33,7 +32,8 @@ namespace ExamenP3YulianaCapito.ViewModels
                 }
             }
         }
-        public List<AreopuertoYC> Areopuertos 
+
+        public List<AreopuertoYC> Areopuertos
         {
             get => _aeropuertos;
             set
@@ -45,6 +45,7 @@ namespace ExamenP3YulianaCapito.ViewModels
                 }
             }
         }
+
         public string Resultado
         {
             get => _resultado;
@@ -57,12 +58,15 @@ namespace ExamenP3YulianaCapito.ViewModels
                 }
             }
         }
+
         public MainPageViewModel()
         {
-            _repositorio = new AreopuertoRepository();  
-            CommandBuscarAeropuertos = new Command(BuscarAeropuertos); 
-            Areopuertos = new List<AreopuertoYC>(); 
+            _repositorio = new AeropuertoSQLiteRepository();
+            CommandBuscarAeropuertos = new Command(BuscarAeropuertos);
+            CommandGuardarHistorial = new Command(GuardarHistorial);
+            Areopuertos = new List<AreopuertoYC>();
         }
+
         public void BuscarAeropuertos()
         {
             if (!string.IsNullOrWhiteSpace(TerminoBusqueda))
@@ -80,7 +84,7 @@ namespace ExamenP3YulianaCapito.ViewModels
                     else
                     {
                         Areopuertos = new List<AreopuertoYC>();
-                        Resultado = "No se encontraron aeropuertos con ese término de búsqueda";
+                        Resultado = "No se encontraron aeropuertos con ese término de búsqueda.";
                     }
                 }
                 catch (Exception ex)
@@ -94,7 +98,34 @@ namespace ExamenP3YulianaCapito.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public void GuardarHistorial()
+        {
+            if (Areopuertos != null && Areopuertos.Any())
+            {
+                try
+                {
+                    var historial = Areopuertos.Select(a => new HistorialYC
+                    {
+                        Name = a.Name,
+                        City = a.City,
+                        Country = a.Country,
+                    }).ToList();
+
+                    _repositorio.GuardarAeropuertos(historial);
+                    Resultado = "Aeropuertos guardados en el historial.";
+                }
+                catch (Exception ex)
+                {
+                    Resultado = $"Error al guardar en el historial: {ex.Message}";
+                }
+            }
+            else
+            {
+                Resultado = "No hay aeropuertos para guardar en el historial.";
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
