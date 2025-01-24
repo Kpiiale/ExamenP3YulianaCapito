@@ -12,13 +12,15 @@ namespace ExamenP3YulianaCapito.ViewModels
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        private IAreopuertoRepository _repositorio;
+        private readonly IAreopuertoRepository _repositorioAPI;
+        private readonly IAreopuertoRepository _repositorioSQLite;
+
         private string _terminoBusqueda;
         private string _resultado;
         private List<AreopuertoYC> _aeropuertos;
 
         public ICommand CommandBuscarAeropuertos { get; set; }
-        public ICommand CommandGuardarHistorial { get; set; }
+        public ICommand CommandCargarHistorial { get; set; }
 
         public string TerminoBusqueda
         {
@@ -61,9 +63,12 @@ namespace ExamenP3YulianaCapito.ViewModels
 
         public MainPageViewModel()
         {
-            _repositorio = new AeropuertoSQLiteRepository();
+            _repositorioAPI = new AreopuertoRepository();
+            _repositorioSQLite = new AeropuertoSQLiteRepository();
+
             CommandBuscarAeropuertos = new Command(BuscarAeropuertos);
-            CommandGuardarHistorial = new Command(GuardarHistorial);
+            CommandCargarHistorial = new Command(CargarHistorial);
+
             Areopuertos = new List<AreopuertoYC>();
         }
 
@@ -73,13 +78,23 @@ namespace ExamenP3YulianaCapito.ViewModels
             {
                 try
                 {
-                    var resultados = _repositorio.BuscarAreopuertos(TerminoBusqueda);
+                    // Usar el repositorio de la API para buscar aeropuertos
+                    var resultados = _repositorioAPI.BuscarAreopuertos(TerminoBusqueda);
 
                     if (resultados != null && resultados.Any())
                     {
                         Areopuertos = resultados;
                         var aeropuerto = resultados.First();
                         Resultado = $"Aeropuerto encontrado: {aeropuerto.Name} ({aeropuerto.City}).";
+
+                        var historial = resultados.Select(a => new HistorialYC
+                        {
+                            NameH = a.Name,
+                            CityH = a.City,
+                            CountryH = a.Country,
+                        }).ToList();
+
+                        _repositorioSQLite.GuardarAeropuertos(historial);
                     }
                     else
                     {
@@ -98,35 +113,30 @@ namespace ExamenP3YulianaCapito.ViewModels
             }
         }
 
-        public void GuardarHistorial()
+        public void CargarHistorial()
         {
-            if (Areopuertos != null && Areopuertos.Any())
+            try
             {
-                try
+                
+                var historial = _repositorioSQLite.ObtenerAeropuertosGuardados();
+                Areopuertos = historial.Select(h => new AreopuertoYC
                 {
-                    var historial = Areopuertos.Select(a => new HistorialYC
-                    {
-                        Name = a.Name,
-                        City = a.City,
-                        Country = a.Country,
-                    }).ToList();
+                    Name = h.NameH,
+                    City = h.CityH,
+                    Country = h.CountryH,
+                }).ToList();
 
-                    _repositorio.GuardarAeropuertos(historial);
-                    Resultado = "Aeropuertos guardados en el historial.";
-                }
-                catch (Exception ex)
-                {
-                    Resultado = $"Error al guardar en el historial: {ex.Message}";
-                }
+                Resultado = "Historial cargado correctamente.";
             }
-            else
+            catch (Exception ex)
             {
-                Resultado = "No hay aeropuertos para guardar en el historial.";
+                Resultado = $"Error al cargar historial: {ex.Message}";
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string name = "")
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
+

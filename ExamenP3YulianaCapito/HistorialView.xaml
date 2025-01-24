@@ -8,14 +8,30 @@
         <vm:HistorialViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout Padding="20">
-        <Label Text="Historial de Búsquedas" FontSize="20" HorizontalOptions="Center" />
-        <ListView ItemsSource="{Binding Historial}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding City}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Text="Historial de Aeropuertos Guardados"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <ListView ItemsSource="{Binding Historial}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding NameH}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding CityH}" FontSize="16" />
+                                <Label Text="{Binding CountryH}" FontSize="16" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Text="Actualizar Historial"
+                    Command="{Binding CargarHistorialCommand}"
+                    Margin="0,10,0,0" />
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

@@ -1,18 +1,20 @@
-﻿using ExamenP3YulianaCapito.Interfaces;
-using ExamenP3YulianaCapito.Models;
+﻿using ExamenP3YulianaCapito.Models;
 using ExamenP3YulianaCapito.Repositories;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace ExamenP3YulianaCapito.ViewModels
 {
     public class HistorialViewModel : INotifyPropertyChanged
     {
-        private List<HistorialYC> _historial;
-        private IAreopuertoRepository _repositorio;
+        private readonly AeropuertoSQLiteRepository _repositorioSQLite;
 
-        public List<HistorialYC> Historial
+        private ObservableCollection<HistorialYC> _historial;
+
+        public ObservableCollection<HistorialYC> Historial
         {
             get => _historial;
             set
@@ -25,19 +27,27 @@ namespace ExamenP3YulianaCapito.ViewModels
             }
         }
 
+        public ICommand CargarHistorialCommand { get; set; }
+
         public HistorialViewModel()
         {
-            _repositorio = new AeropuertoSQLiteRepository();
+            _repositorioSQLite = new AeropuertoSQLiteRepository();
+            _historial = new ObservableCollection<HistorialYC>();
+            CargarHistorialCommand = new Command(CargarHistorial);
             CargarHistorial();
         }
 
         private void CargarHistorial()
         {
-            Historial = _repositorio.ObtenerAeropuertosGuardados();
+            var historialGuardado = _repositorioSQLite.ObtenerAeropuertosGuardados();
+            Historial = new ObservableCollection<HistorialYC>(historialGuardado);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
