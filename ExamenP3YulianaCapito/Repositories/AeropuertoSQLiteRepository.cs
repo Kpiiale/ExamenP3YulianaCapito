@@ -15,10 +15,10 @@ namespace ExamenP3YulianaCapito.Repositories
 
         public AeropuertoSQLiteRepository()
         {
-            InitSQLite();
+            Init();
         }
 
-        private void InitSQLite()
+        private void Init()
         {
             _connection = new SQLiteConnection(_dbPath);
             _connection.CreateTable<HistorialYC>();

@@ -15,13 +15,5 @@
         <Label Text="{Binding Resultado}" 
                FontAttributes="Bold" 
                TextColor="White" />
-        <ListView ItemsSource="{Binding Areopuertos}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" 
-                              Detail="{Binding City}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
     </StackLayout>
 </ContentPage>

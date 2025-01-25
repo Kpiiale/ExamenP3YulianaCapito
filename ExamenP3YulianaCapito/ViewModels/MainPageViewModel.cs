@@ -78,7 +78,6 @@ namespace ExamenP3YulianaCapito.ViewModels
             {
                 try
                 {
-                    // Usar el repositorio de la API para buscar aeropuertos
                     var resultados = _repositorioAPI.BuscarAreopuertos(TerminoBusqueda);
 
                     if (resultados != null && resultados.Any())
