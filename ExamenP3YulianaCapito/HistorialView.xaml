@@ -3,33 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:ExamenP3YulianaCapito.ViewModels"
              x:Class="ExamenP3YulianaCapito.HistorialView"
-             Title="HistorialView">
+             Title="HistorialViewYC">
     <ContentPage.BindingContext>
         <vm:HistorialViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Padding="20">
-            <Label Text="Historial de Aeropuertos Guardados"
+        <StackLayout Padding="20" BackgroundColor="DarkBlue">
+            <Label x:Name="YC_label1" 
+                   Text="Historial de Aeropuertos Guardados"
                    FontSize="24"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center" 
+                   />
 
             <ListView ItemsSource="{Binding Historial}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Vertical" Padding="10">
-                                <Label Text="{Binding NameH}" FontSize="18" FontAttributes="Bold" />
-                                <Label Text="{Binding CityH}" FontSize="16" />
-                                <Label Text="{Binding CountryH}" FontSize="16" />
+                                <Label x:Name="YC_LabelName" Text="{Binding NameH}" FontSize="18" FontAttributes="Bold" />
+                                <Label x:Name="YC_LabelCity" Text="{Binding CityH}" FontSize="16" />
+                                <Label x:Name="YC_LabelCountry" Text="{Binding CountryH}" FontSize="16" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Text="Actualizar Historial"
+            <Button x:Name="YC_btn" Text="Actualizar Historial"
+                    BackgroundColor="CornflowerBlue"
                     Command="{Binding CargarHistorialCommand}"
                     Margin="0,10,0,0" />
         </StackLayout>

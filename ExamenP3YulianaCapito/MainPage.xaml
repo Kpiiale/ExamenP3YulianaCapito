@@ -2,15 +2,19 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:ExamenP3YulianaCapito.ViewModels"
-             x:Class="ExamenP3YulianaCapito.MainPage">
+             x:Class="ExamenP3YulianaCapito.MainPage"
+             Title="HomeViewYC">
     <ContentPage.BindingContext>
         <vm:MainPageViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout Padding="20">
-        <Entry Placeholder="Ingrese un término de búsqueda"
-               Text="{Binding TerminoBusqueda}" />
-        <Button Text="Buscar"
+    <StackLayout Padding="20" BackgroundColor="DarkViolet">
+        <Entry x:Name="YC_entry" 
+               Placeholder="Ingresar búsqueda"
+               Text="{Binding TerminoBusqueda}" 
+               BackgroundColor="Black"/>
+        <Button x:Name="YC_btn" 
+                Text="Buscar"
                 Command="{Binding CommandBuscarAeropuertos}" />
         <Label Text="{Binding Resultado}" 
                FontAttributes="Bold" 
